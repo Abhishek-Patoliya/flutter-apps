@@ -1,0 +1,40 @@
+name: flutterappsss
+description: A new Flutter application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^0.5.12
+  firebase_auth: ^0.18.1+1
+
+  cupertino_icons: ^0.1.2
+  url_launcher: ^5.7.2
+  passwordfield: ^0.0.5
+  titled_navigation_bar: ^4.1.0
+  share: ^0.6.4+3
+  esys_flutter_share: ^1.0.2
+  http: ^0.12.1
+  carousel_slider: ^2.2.1 
+  image_picker: ^0.6.7+3
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/Spider.jpg
+    - assets/images/drawer_header_background.png
+    - assets/image1.png
+    - assets/image2.png
+
+
