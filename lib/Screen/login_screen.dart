@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappsss/Screen/home_screen.dart';
 import 'package:flutterappsss/Screen/sign_up.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,37 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final username_controller = TextEditingController();
-  final password_controller = TextEditingController();
-
-  SharedPreferences logindata;
-  bool newuser;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    check_if_already_login();
-  }
-
-  void check_if_already_login() async {
-    logindata = await SharedPreferences.getInstance();
-    newuser = (logindata.getBool('login') ?? true);
-
-    print(newuser);
-    if (newuser == false) {
-      Navigator.pushReplacement(
-          context, new MaterialPageRoute(builder: (context) => HomeScreen()));
-    }
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    username_controller.dispose();
-    password_controller.dispose();
-    super.dispose();
-  }
+  String _email, _password;
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +37,18 @@ class _LoginScreenState extends State<LoginScreen> {
 //Email
 
                   TextFormField(
-                    controller: username_controller,
+                    validator: (emailvalue) {
+                      if (emailvalue.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _email = value.trim();
+                      });
+                    },
+                    // controller: username_controller,
                     decoration: const InputDecoration(
                       labelStyle: TextStyle(color: Colors.red),
                       labelText: "Enter Email",
@@ -78,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red)),
                     ),
+
                     keyboardType: TextInputType.emailAddress,
                     style: TextStyle(
                       color: Colors.white,
@@ -88,7 +71,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   //Password
                   TextFormField(
-                    controller: password_controller,
+                    validator: (pwdvalue) {
+                      if (pwdvalue.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      if (pwdvalue.length < 8) {
+                        return 'Password must be at least 8 characters';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value.trim();
+                      });
+                    },
+                    // controller: password_controller,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.red),
                       fillColor: Colors.white,
@@ -133,25 +130,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   RaisedButton(
                     onPressed: () {
-                      //
-                      //
-                      //
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => HomeScreen()));
+                      auth
+                          .createUserWithEmailAndPassword(
+                              email: _email, password: _password)
+                          .then((_) {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => HomeScreen()));
+                      });
 
-                      String username = username_controller.text;
-                      String password = password_controller.text;
-                      if (username != '' && password != '') {
-                        print('Successfull');
-                        logindata.setBool('login', false);
-                        logindata.setString('username', username);
-                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
-                      }
+                      //
+                      // onPressed: () {
+                      // auth.createUserWithEmailAndPassword(
+                      //     email: _email, password: _password);
+                      //
+                      //
+                      //
+                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      //     builder: (context) => HomeScreen()));
+
+                      // String username = username_controller.text;
+                      // String password = password_controller.text;
+                      // if (username != '' && password != '') {
+                      //   print('Successfull');
+                      //   logindata.setBool('login', false);
+                      //   logindata.setString('username', username);
+                      //    Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => HomeScreen()));
+                      // }
                     },
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
@@ -180,9 +187,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   RaisedButton(
                     onPressed: () {
-                      Navigator.push(context,
+                      auth.signInWithEmailAndPassword(
+                          email: _email, password: _password);
+                      // .then((_) {
+                      Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => SignUp()));
                     },
+
+                    // onPressed: () {
+
+                    // auth.signInWithEmailAndPassword(
+                    //     email: _email, password: _password);
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //     builder: (context) => SignUp()));
+                    // },
+
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
                       width: double.infinity,

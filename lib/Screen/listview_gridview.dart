@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {
   final response =
-  await http.get('https://jsonplaceholder.typicode.com/albums/1');
+      await http.get('https://jsonplaceholder.typicode.com/albums/1');
 
   if (response.statusCode == 200) {
     return Album.fromJson(json.decode(response.body));
@@ -18,17 +18,15 @@ Future<Album> fetchAlbum() async {
 class Album {
   final int id;
   final String email;
-final String title;
+  final String title;
 
-
-
-  Album({this.email, this.id,this.title});
+  Album({this.email, this.id, this.title});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
-        id: json['id'],
-        email: json['email'],
-      title:json['title'],
+      id: json['id'],
+      email: json['email'],
+      title: json['title'],
     );
   }
 }
@@ -57,6 +55,10 @@ class _ListViewGridViewState extends State<ListViewGridView>
 //    2 button
 
     var tabBarItem = TabBar(
+      indicatorColor:Colors.white ,
+      // BoxDecoration(color: Colors.blue),
+      unselectedLabelColor: Colors.black,
+      labelColor: Colors.white,
       tabs: [
         Tab(
           icon: Icon(Icons.list),
@@ -66,7 +68,8 @@ class _ListViewGridViewState extends State<ListViewGridView>
         ),
       ],
       controller: tabController,
-      indicatorColor: Colors.green,
+      indicatorSize: TabBarIndicatorSize.tab,
+      //indicatorColor: Colors.green,
     );
 
 //    ListView Builder

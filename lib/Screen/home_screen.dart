@@ -1,13 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterappsss/Screen/esys_photo_share.dart';
 import 'package:flutterappsss/Screen/listview_gridview.dart';
 import 'package:flutterappsss/Screen/login_screen.dart';
-import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:flutterappsss/Screen/share_all_media.dart';
-import 'package:flutterappsss/Screen/esys_photo_share.dart';
-import 'slider_carousel.dart';
-import 'listview_gridview.dart';
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
+
 import 'esys_photo_share.dart';
+import 'listview_gridview.dart';
+import 'slider_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   String _title;
+  final auth = FirebaseAuth.instance;
 
   final List<Widget> _children = [
     Demo(),
@@ -79,12 +82,16 @@ class _HomeScreenState extends State<HomeScreen> {
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
-                ),
-              );
+              auth.signOut();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+              //
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => LoginScreen(),
+              //   ),
+              // );
             },
           ),
         ],
@@ -104,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       );
+
   Widget _drawerheader() {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 

@@ -17,7 +17,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               child: Text('Logout'),
               onPressed: () async {
-                await _auth.signOut();
                 Navigator.of(context).pushReplacementNamed('/loginpage');
               },
             ),
